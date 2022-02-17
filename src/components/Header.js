@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import axios from 'axios';
 
 const Search = styled('form')(({ theme }) => ({
   position: 'relative',
@@ -50,19 +49,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Header = ({ title, setSearch }) => {
-  const [inputVal, setInputVal] = useState(null);
+const Header = (props) => {
+  const [inputVal, setInputVal] = useState('');
 
-  const handleSearch = async (event) => {
+  const handleSearch = (event) => {
     event.preventDefault();
-    if (inputVal) {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/?apikey=${process.env.REACT_APP_API_KEY}&s=${inputVal}`
-      );
-      setSearch(result.data.Search);
-    } else {
-      alert('Please fill the input');
-    }
+    props.setSearch(inputVal);
   };
 
   return (
@@ -75,7 +67,7 @@ const Header = ({ title, setSearch }) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            {title}
+            {props.title}
           </Typography>
           <Search onSubmit={handleSearch}>
             <SearchIconWrapper>

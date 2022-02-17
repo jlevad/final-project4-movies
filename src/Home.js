@@ -4,24 +4,45 @@ import Header from './components/Header';
 import Movie from './components/Movie';
 
 function Home() {
-  const [movies, setMovies] = useState(null);
-  const [search, setSearch] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [search, setSearch] = useState('man');
+  const [loading, setLoading] = useState(true);
+
+
+  const getData = (search) => {
+    setLoading(true);
+    axios.get(`${process.env.REACT_APP_BASE_URL}/?apikey=${process.env.REACT_APP_API_KEY}&s=${search}`)
+      .then((response) => {
+        // console.log(response);
+        if (response.data.Search) {
+          setMovies(response.data.Search);
+        } else {
+          setMovies([]);
+        }
+        setLoading(false);
+      }).catch((error) => {
+        // console.log(error);
+        setMovies([]);
+        setLoading(false);
+      })
+  }
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/?apikey=${process.env.REACT_APP_API_KEY}&s=man`
-      );
-      setMovies(result.data.Search);
-      // console.log(result.data.Search);
-    };
-    getData();
+    if (search.length >= 3) {
+      getData(search);
+    } else {
+      setSearch('man');
+    }
+  }, [search]);
+
+  useEffect(() => {
+    getData(search)
   }, []);
 
   return (
-    <div className="Home">
+    <div className="bg-neutral-500 h-full">
       <Header title="Zero Movie" setSearch={setSearch} />
-      <Movie movies={movies} search={search} />
+      <Movie movies={movies} loading={loading} />
     </div>
   );
 }
