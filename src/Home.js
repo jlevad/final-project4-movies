@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from './components/Header';
 import Movie from './components/Movie';
+import { Typography } from '@mui/material';
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -42,6 +43,18 @@ function Home() {
   return (
     <div className="bg-neutral-500 h-full">
       <Header title="Zero Movie" setSearch={setSearch} />
+      <div className='flex items-center justify-center mt-10 flex-col'>
+        <Typography
+          variant='h5'
+        >
+          Result for
+        </Typography>
+        <Typography
+          variant='h4'
+        >
+          "{search}"
+        </Typography>
+      </div>
       <Movie movies={movies} loading={loading} />
     </div>
   );

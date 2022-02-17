@@ -69,7 +69,9 @@ const Movie = (props) => {
                 </Item>
               ))
               : (
-                <Typography>Data Tidak Ditemukan</Typography>
+                <div className='flex items-center justify-center w-full'>
+                  <Typography>Data is not found</Typography>
+                </div>
               )
         }
       </MovieBox>
